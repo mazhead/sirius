@@ -22,7 +22,7 @@
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
 				<li{% if request.url_rule.endpoint == "landing.landing" %} class="active"{% endif %}><a href="{{ url_for('landing.landing') }}">Home</a></li>
-				<li{% if request.url_rule.endpoint == "landing.about" %} class="active"{% endif %}><a href="{{ url_for('landing.about') }}">About</a></li>
+				<!-- <li{% if request.url_rule.endpoint == "landing.about" %} class="active"{% endif %}><a href="{{ url_for('landing.about') }}">About</a></li> -->
 			</ul>
 			{% if current_user.is_authenticated() %}
 			<ul class="nav navbar-nav navbar-right">
