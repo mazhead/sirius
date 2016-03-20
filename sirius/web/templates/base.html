@@ -21,10 +21,9 @@
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li{% if request.url_rule.endpoint == "landing.landing" %} class="active"{% endif %}><a href="{{ url_for('landing.landing') }}">Home</a></li>
 				<!-- <li{% if request.url_rule.endpoint == "landing.about" %} class="active"{% endif %}><a href="{{ url_for('landing.about') }}">About</a></li> -->				
 				{% if current_user.is_authenticated() %}
-				<li{% if request.url_rule.endpoint == "/printer/1" %} class="active"{% endif %}><a href="/printer/1">Print image</a></li>
+				<li{% if request.url_rule.endpoint == "/printer/1/printimage" %} class="active"{% endif %}><a href="/printer/1/printimage">Print image</a></li>
 				<li{% if request.url_rule.endpoint == "admin.admin_landing" %} class="active"{% endif %}><a href="{{ url_for('admin.admin_landing') }}">Face load</a></li>
 				{% endif %}
 			</ul>
