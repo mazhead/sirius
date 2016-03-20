@@ -49,7 +49,7 @@ def rle(lengths):
 def resize_384(im):
     w, h = im.size
     resize_width  = 384
-    resize_height = resize_width * h / w 
+    resize_height = resize_width * h / w
     return im.resize((resize_width, resize_height), Image.ANTIALIAS)
 
 def dithering(im):
