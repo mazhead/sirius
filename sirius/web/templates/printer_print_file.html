@@ -4,14 +4,14 @@
 
 {% block page_content %}
 <div class="row">
-	<div class="col-md-8">
+	<div class="col-md-12">
 
 		<h1>Send picture</h1>
 
 		<form method="POST">
 			{{ form.csrf_token }}
 			<div class="form-group {% if form.target_printer.errors %}has-error{% endif%}">
-				<label>{{ form.target_printer.label }}</label>
+				<label>{{ form.photo.label }}</label>
 			{% if form.target_printer.errors %}
 			<ul>
 			{% for error in form.target_printer.errors %}
@@ -35,12 +35,12 @@
 		<button type="submit" class="btn btn-primary">Print now</button>
 		<button class="btn" type="button" id="preview">Preview</button>
 	</form>
-		
+
 		<p>&nbsp;</p>
 		<p>
 			<strong>Preview</strong>
 		</p>
-		<div class="thumbnail" style="width: 300px;">
+		<div class="thumbnail">
 			<div id="preview_pane" style="width: 100%; border: 1px solid #ccc; overflow: hidden;"></div>
 		</div>
 
@@ -52,6 +52,40 @@
 {{ super() }}
 
 <script>
+				$('input[type=file]').on('change', prepareUpload);
+
+				// Grab the files and set them to our variable
+				function prepareUpload(event)
+				{
+					var file = this.files[0];
+
+					if ( window.FileReader ) {
+					  reader = new FileReader();
+					  reader.onloadend = function (e) {
+					    showUploadedItem(e.target.result);
+					  };
+					  reader.readAsDataURL(file);
+					}
+					if (window.FormData) {
+				    formdata = new FormData();
+				  }
+					if (formdata) {
+					  formdata.append("images[]", file);
+						$.ajax({
+					    url: "/upload",
+					    type: "POST",
+					    data: formdata,
+					    processData: false,
+					    contentType: false,
+					    success: function (res) {
+					      document.getElementById("preview_pane").innerHTML = res;
+					    }
+					  });
+					}
+				  files = event.target.files;
+				}
+
+
         $("#preview").on('click', function() {
         $.ajax({
           url: "{{ url_for('printer_print.preview',
@@ -59,13 +93,22 @@
                           username=current_user.username,
                           printer_id=printer.id) }}",
           data: $("#message").val(),
-	  method: "POST",
-	  contentType: "text/plain",
-          success: function(response) {
-          $("#preview_pane").html(response);
-            console.log(response);
-          }
-	})
-	})
+	  			method: "POST",
+	  			contentType: "text/plain",
+	        success: function(response) {
+	          $("#preview_pane").html(response);
+	            console.log(response);
+	        }
+				})
+			})
+
+			function showUploadedItem (source) {
+			  var photo = document.getElementById("photo"),
+			      img  = document.createElement("img");
+						img.className += " thumbnail";
+						img.style.width = "100%";
+			    img.src = source;
+			    photo.parentNode.insertBefore(img, photo.nextSibling);
+			}
 </script>
 {% endblock scripts%}

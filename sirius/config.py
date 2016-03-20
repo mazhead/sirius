@@ -21,7 +21,6 @@ class TestConfig(Config):
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    #use_reloader=True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
 

@@ -4,14 +4,14 @@
 
 {% block page_content %}
 <div class="row">
-	<div class="col-md-8">
+	<div class="col-md-12">
 
 		<h1>Printers</h1>
-		
+
 		{% if not my_printers and not friends_printers %}
 		<p><em class="bg-warning">None available</em></p>
 		{% endif %}
-		
+
 		<ul>
 
 		{% for p in my_printers %}
@@ -24,7 +24,7 @@
 									printer_id=p.id) }}">Send message</a>
 		</li>
 		{% endfor %}
-		
+
 		{% for p in friends_printers %}
 		<li>{{ p.name }} (owned by @{{ p.owner.username }})
 			<a class="btn btn-default btn-xs" href="{{
@@ -34,7 +34,7 @@
 		{% endfor %}
 
 		</ul>
-		
+
 		<p>
 		<a class="btn btn-default" href="{{ url_for('landing.claim',
 										user_id=current_user.id,
@@ -42,11 +42,11 @@
 			Claim a printer
 		</a>
 		</p>
-		
+
 		<h1>Messaging permissions</h1>
-		
+
 		<p>Anybody you follow on Twitter can send a message to any of your printers. These are the {{ friends|length }} account(s) you follow who also have accounts here:</p>
-		
+
 		{% if signed_up_friends %}
 			<ul>
 			{% for f in signed_up_friends %}
@@ -56,7 +56,7 @@
 		{% else %}
 			<p><em class="bg-warning">No-one yet</em></p>
 		{% endif %}
-		
+
 		<form method="POST" action="{{ url_for('landing.twitter_friend_refresh',
 										user_id=current_user.id,
 										username=current_user.username) }}">

@@ -21,7 +21,7 @@
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				<!-- <li{% if request.url_rule.endpoint == "landing.about" %} class="active"{% endif %}><a href="{{ url_for('landing.about') }}">About</a></li> -->				
+				<!-- <li{% if request.url_rule.endpoint == "landing.about" %} class="active"{% endif %}><a href="{{ url_for('landing.about') }}">About</a></li> -->
 				{% if current_user.is_authenticated() %}
 				<li{% if request.url_rule.endpoint == "/printer/1/printimage" %} class="active"{% endif %}><a href="/printer/1/printimage">Print image</a></li>
 				<li{% if request.url_rule.endpoint == "admin.admin_landing" %} class="active"{% endif %}><a href="{{ url_for('admin.admin_landing') }}">Face load</a></li>
@@ -38,7 +38,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="container" role="main">
+<div class="container" role="main" style="max-width: 480px;" >
 	{% for message in get_flashed_messages() %}
 	<div class="alert alert-warning">
 		<button type="button" class="close" data-dismiss="alert">&times;</button>
