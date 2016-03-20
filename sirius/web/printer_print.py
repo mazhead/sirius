@@ -116,6 +116,90 @@ def printer_print(printer_id):
     )
 
 
+@login.login_required
+@blueprint.route('/printer/<int:printer_id>/printimage', methods=['GET', 'POST'])
+def imageprint(printer_id):
+    printer = hardware.Printer.query.get(printer_id)
+    if printer is None:
+        flask.abort(404)
+
+    # PERMISSIONS
+    # the printer must either belong to this user, or be
+    # owned by a friend
+    if printer.owner.id == login.current_user.id:
+        # fine
+        pass
+    elif printer.id in [p.id for p in login.current_user.friends_printers()]:
+        # fine
+        pass
+    else:
+        flask.abort(404)
+
+    form = PrintForm()
+    # Note that the form enforces access permissions: People can't
+    # submit a valid printer-id that's not owned by the user or one of
+    # the user's friends.
+    choices = [
+        (x.id, x.name) for x in login.current_user.printers
+    ] + [
+        (x.id, x.name) for x in login.current_user.friends_printers()
+    ]
+    form.target_printer.choices = choices
+
+    # Set default printer on get
+    if flask.request.method != 'POST':
+        form.target_printer.data = printer.id
+
+    if form.validate_on_submit():
+        # TODO: move image encoding into a pthread.
+        # TODO: use templating to avoid injection attacks
+        pixels = image_encoding.default_pipeline(
+            templating.default_template(form.message.data))
+        hardware_message = messages.SetDeliveryAndPrint(
+            device_address=printer.device_address,
+            pixels=pixels,
+        )
+
+        # If a printer is "offline" then we won't find the printer
+        # connected and success will be false.
+        success, next_print_id = protocol_loop.send_message(
+            printer.device_address, hardware_message)
+
+        if success:
+            flask.flash('Sent your message to the printer!')
+            stats.inc('printer.print.ok')
+        else:
+            flask.flash(("Could not send message because the "
+                         "printer {} is offline.").format(printer.name),
+                        'error')
+            stats.inc('printer.print.offline')
+
+        # Store the same message in the database.
+        png = io.BytesIO()
+        pixels.save(png, "PNG")
+        model_message = model_messages.Message(
+            print_id=next_print_id,
+            pixels=bytearray(png.getvalue()),
+            sender_id=login.current_user.id,
+            target_printer=printer,
+        )
+
+        # We know immediately if the printer wasn't online.
+        if not success:
+            model_message.failure_message = 'Printer offline'
+            model_message.response_timestamp = datetime.datetime.utcnow()
+        db.session.add(model_message)
+
+        return flask.redirect(flask.url_for(
+            'printer_overview.printer_overview',
+            printer_id=printer.id))
+
+    return flask.render_template(
+        'printer_print_file.html',
+        printer=printer,
+        form=form,
+    )
+
 @blueprint.route('/<int:user_id>/<username>/printer/<int:printer_id>/preview', methods=['POST'])
 @login.login_required
 def preview(user_id, username, printer_id):
