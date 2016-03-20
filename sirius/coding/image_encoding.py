@@ -59,6 +59,14 @@ def threshold(im):
     thresholded = ''.join(pixel_to_bw(x) for x in im.convert('RGBA').getdata())
     return Image.fromstring('L', im.size, thresholded)
 
+def pixel_to_bw(p):
+    if p == (0, 0, 0, 0): # 0 alpha means white.
+        return WHITE
+    elif p[0] > THRESHOLD or p[1] > THRESHOLD or p[2] > THRESHOLD:
+        return WHITE
+    else:
+        return BLACK
+
 def rle_from_bw(bw_image):
     """
     :param bw_image: A mode "1" PIL image.
