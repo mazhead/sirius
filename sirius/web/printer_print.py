@@ -29,6 +29,7 @@ class PrintForm(flask_wtf.Form):
         'Message',
         validators=[wtforms.validators.DataRequired()],
     )
+    photo = wtforms.FileField('Image')
 
 
 @login.login_required
