@@ -21,28 +21,9 @@
 			{% endif %}
 			{{ form.photo(class="form-control") }}
 		</div>
-		<div class="form-group {% if form.message.errors %}has-error{% endif%}">
-			<label>{{ form.message.label }}</label>
-			{% if form.message.errors %}
-			<ul>
-			{% for error in form.message.errors %}
-			<li>{{ error }}</li>
-			{% endfor %}
-			</ul>
-			{% endif %}
-			{{ form.message(class="form-control") }}
-		</div>
-		<button type="submit" class="btn btn-primary">Print now</button>
-		<button class="btn" type="button" id="preview">Preview</button>
-	</form>
 
-		<p>&nbsp;</p>
-		<p>
-			<strong>Preview</strong>
-		</p>
-		<div class="thumbnail">
-			<div id="preview_pane" style="width: 100%; border: 1px solid #ccc; overflow: hidden;"></div>
-		</div>
+		<button type="submit" class="btn btn-primary">Print now</button>
+	</form>
 
 	</div>
 </div>
@@ -68,15 +49,16 @@
 					}
 					if (window.FormData) {
 				    formdata = new FormData();
-				  }
+				    formdata.append("image", file);
+				  	}
 					if (formdata) {
-					  formdata.append("images[]", file);
 						$.ajax({
 					    url: "/upload",
 					    type: "POST",
 					    data: formdata,
 					    processData: false,
 					    contentType: false,
+					    async: false,
 					    success: function (res) {
 					      document.getElementById("preview_pane").innerHTML = res;
 					    }
@@ -85,22 +67,6 @@
 				  files = event.target.files;
 				}
 
-
-        $("#preview").on('click', function() {
-        $.ajax({
-          url: "{{ url_for('printer_print.preview',
-                          user_id=current_user.id,
-                          username=current_user.username,
-                          printer_id=printer.id) }}",
-          data: $("#message").val(),
-	  			method: "POST",
-	  			contentType: "text/plain",
-	        success: function(response) {
-	          $("#preview_pane").html(response);
-	            console.log(response);
-	        }
-				})
-			})
 
 			function showUploadedItem (source) {
 			  var photo = document.getElementById("photo"),

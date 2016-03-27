@@ -7,6 +7,7 @@ class Config:
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     # printer not seen for 60 seconds: Mark offline.
     PRINTER_OFFLINE_CUTOFF_SECONDS = 60
+    UPLOAD_FOLDER = '/var/uploads'
 
     @staticmethod
     def init_app(app):

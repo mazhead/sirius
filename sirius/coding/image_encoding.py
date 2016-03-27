@@ -1,4 +1,7 @@
+# -*- coding: utf-8 -*-
+# encoding: utf-8
 from PIL import Image
+from PIL import ImageEnhance
 from itertools import groupby
 import struct
 import io
@@ -52,7 +55,27 @@ def resize_384(im):
     resize_height = resize_width * h / w 
     return im.resize((resize_width, resize_height), Image.ANTIALIAS)
 
+def crop_384(im):
+    w, h = im.size
+    return im.crop((0, 0, 384, min(h, 10000)))
+
 def dithering(im):
+    # imconvert = im.convert('RGBA')
+    # background = Image.new("RGB", im.size, (255, 255, 255))
+    # background.paste(imconvert, mask=im.split()[3])
+
+    # source = background.split()
+
+    # R, G, B = 0, 1, 2
+    # constant = 0.8 # constant by which each pixel is divided
+
+    # Red = source[R].point(lambda i: i/constant)
+    # Green = source[G].point(lambda i: i/constant)
+    # Blue = source[B].point(lambda i: i/constant)
+
+    # imb = Image.merge(background.mode, (Red, Green, Blue))
+
+    # return imb.convert('1')
     return im.convert('1')
 
 def threshold(im):
@@ -113,15 +136,15 @@ def html_to_png(html):
         caps = {'acceptSslCerts': True}
         driver = webdriver.PhantomJS(
             'phantomjs', desired_capabilities=caps,
-            service_args=['--ignore-ssl-errors=true', '--ssl-protocol=any'])
+            service_args=['--ignore-ssl-errors=true', '--ssl-protocol=any','--output-encoding=utf8'])
         driver.set_window_size(384, 5)
 
         # note that the .html suffix is required to make phantomjs
         # pick up the mime-type and render correctly.
         with tempfile.NamedTemporaryFile(suffix='.html') as f:
-            f.write(html)
+            f.write(html.encode('utf-8'))
             f.flush()
-            driver.get('file://' + f.name)
+            driver.get('file://' + f.name) 
             data = io.BytesIO(driver.get_screenshot_as_png())
 
         return data
@@ -129,6 +152,17 @@ def html_to_png(html):
         if driver:
             driver.quit()
 
+def raw_image_pipeline(data):
+    """Encode w:384 image into an RLE image."""
+    image = Image.open(data)
+    image = resize_384(image)
+    return dithering(image)
+
+def image_pipeline(data):
+    """Encode image into an RLE image."""
+    image = Image.open(data)
+    image = resize_384(image)
+    return dithering(image)
 
 def default_pipeline(html):
     """Encode HTML into an RLE image."""
