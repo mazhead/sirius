@@ -104,3 +104,13 @@ canvas {
     background: linear-gradient( 45deg, rgba(21, 20, 20, 0) 33.333%, #FFF 33.333%, #FFF 66.667%, rgba(0, 0, 0, 0) 66.667%), linear-gradient( -45deg, rgba(0, 0, 0, 0) 33.333%, rgba(226, 226, 226, 0) 33.333%, rgba(226, 226, 226, 0) 66.667%, #DADADA 66.667%);
     background-size: 24px 58px;
 }
+
+.pin-container{
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin: 0 auto;
+    height: 100vw;
+    margin-top: 20px;
+}
