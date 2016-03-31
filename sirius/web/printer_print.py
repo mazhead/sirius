@@ -32,8 +32,23 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
-blueprint = flask.Blueprint('printer_print', __name__)
+def gentemplate(instr):
+    tmpl = '''\
+    <p>{0}</p>
+    <style>
+   p{{
+            font-weight:700;
+            font-size:70px;
+            text-transform:uppercase;
+            line-height:1;
+            font-family: Arial;
+            width:385px;
+    }}
+    </style>
+    '''.format(instr)
+    return tmpl
 
+blueprint = flask.Blueprint('printer_print', __name__)
 
 class PrintForm(flask_wtf.Form):
     target_printer = wtforms.SelectField(
@@ -244,6 +259,28 @@ def raw_printer_print_api(action):
         hardware_message = messages.SetDeliveryAndPrintNoFace(
             device_address=printer.device_address,
             pixels=pixels,
+        )    
+    elif action == 'print':
+        hardware_message = messages.SetDeliveryAndPrintNoFace(
+            device_address=printer.device_address,
+            pixels=pixels,
+        )   
+    elif action == 'personalityandmessage':
+        hardware_message = messages.SetPersonalityWithMessage(
+            device_address=printer.device_address,
+            face_pixels=pixels,
+            nothing_to_print_pixels=image_encoding.default_pipeline(gentemplate('Nothing to print')),
+            cannot_see_bridge_pixels=image_encoding.default_pipeline(gentemplate('Cannot see bridge')),
+            cannot_see_internet_pixels=image_encoding.default_pipeline(gentemplate('Cannot see internet')),
+            message_pixels=image_encoding.default_pipeline(gentemplate('Hi there!')),
+        )   
+    elif action == 'personality':
+        hardware_message = messages.SetPersonality(
+            device_address=printer.device_address,
+            face_pixels=pixels,
+            nothing_to_print_pixels=image_encoding.default_pipeline(gentemplate('Nothing to print')),
+            cannot_see_bridge_pixels=image_encoding.default_pipeline(gentemplate('Cannot see bridge')),
+            cannot_see_internet_pixels=image_encoding.default_pipeline(gentemplate('Cannot see internet'))
         )
     else:
         assert False, "wtf print route {}".format(x)

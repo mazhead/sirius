@@ -26,7 +26,6 @@ from sirius.web import landing
 from sirius.web import atkinson
 from sirius.web import twitter
 from sirius.web import login
-from sirius.web import admin
 from sirius.web import printer_print
 from sirius.web import printer_overview
 from sirius.web import files
@@ -56,7 +55,6 @@ def create_app(config_name):
     app.register_blueprint(twitter.blueprint)
     app.register_blueprint(printer_overview.blueprint)
     app.register_blueprint(printer_print.blueprint)
-    app.register_blueprint(admin.blueprint)
     app.register_blueprint(atkinson.blueprint)
 
     # Live interactions.
