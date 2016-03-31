@@ -142,7 +142,7 @@ def html_to_png(html):
         # note that the .html suffix is required to make phantomjs
         # pick up the mime-type and render correctly.
         with tempfile.NamedTemporaryFile(suffix='.html') as f:
-            f.write(html.encode('utf-8'))
+            f.write(html)
             f.flush()
             driver.get('file://' + f.name) 
             data = io.BytesIO(driver.get_screenshot_as_png())

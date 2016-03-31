@@ -2,6 +2,7 @@ import jinja2
 
 DEFAULT_TEMPLATE = '''\
 <html>
+  <head><meta charset="utf-8"></head>
   <body>
     {{ raw_html|safe }}
   </body>
@@ -17,4 +18,4 @@ ENV = jinja2.Environment()
 
 def default_template(raw_html):
     t = ENV.from_string(DEFAULT_TEMPLATE)
-    return t.render(raw_html=raw_html)
+    return t.render(raw_html=raw_html).encode('utf-8')
