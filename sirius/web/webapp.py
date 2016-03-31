@@ -23,11 +23,13 @@ from sirius.models import hardware
 from sirius.models import messages
 
 from sirius.web import landing
+from sirius.web import atkinson
 from sirius.web import twitter
 from sirius.web import login
 from sirius.web import admin
 from sirius.web import printer_print
 from sirius.web import printer_overview
+from sirius.web import files
 
 
 logger = logging.getLogger(__name__)
@@ -48,12 +50,14 @@ def create_app(config_name):
     logging.basicConfig(level=logging.DEBUG if app.debug else logging.INFO)
 
     # Register blueprints
+
     app.register_blueprint(stats.blueprint)
     app.register_blueprint(landing.blueprint)
     app.register_blueprint(twitter.blueprint)
     app.register_blueprint(printer_overview.blueprint)
     app.register_blueprint(printer_print.blueprint)
     app.register_blueprint(admin.blueprint)
+    app.register_blueprint(atkinson.blueprint)
 
     # Live interactions.
     gevent.spawn(protocol_loop.mark_dead_loop)

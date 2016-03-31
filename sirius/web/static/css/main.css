@@ -1,0 +1,106 @@
+/*@media (min-width: 1366px) {
+    .container {
+        width: 1280px!important;
+    }
+}
+
+@media (max-width: 1365px) {
+    .container {
+        width: 670px!important;
+    }
+}*/
+
+@media (min-width: 1200px) {
+    .container,
+    .navbar-static-top .container,
+    .navbar-fixed-top .container,
+    .navbar-fixed-bottom .container {
+        width: 1280px!important;
+    }
+}
+
+.margin20 {
+    margin-top: 20px!important;
+    margin-bottom: 20px!important;
+}
+
+.col-center {
+    float: none;
+    margin: 0 auto;
+    display: block;
+}
+
+.center {
+    text-align: center;
+}
+
+.h3 {
+    font-size: 16px;
+}
+
+canvas {
+    display: block;
+    margin: 0 auto;
+    border: 2px dashed #BDBCBC;
+}
+
+.orange {
+    background-color: #F78A1B;
+}
+
+.source {
+    width: 384px;
+    margin-bottom: 20px;
+}
+
+.source-container {
+    /*padding-top: 70px;*/
+}
+
+.slabtext-button:after {
+    content: 'ST'
+}
+
+.reciept {
+    /*background-image: url(/asset/img/receipt.png);*/
+    /*width: 450px;*/
+    /*height: 1050px;*/
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin: 0 auto;
+    width: 480px;
+}
+
+.editor {
+    padding: 0px!important;
+    background-color: #fff;
+}
+
+.editor-wrapper {
+    width: 386px;
+    min-height: 40px;
+    margin: 0 auto;
+    margin-top: 20px;
+    background-color: #FDFDFD;
+    border: 1px solid #D2D2D2;
+    color: #000;
+}
+
+.slabtext-linesize-0 {
+    line-height: .9;
+}
+
+.slabtext {
+    letter-spacing: -0.4px;
+}
+
+.zigzag:before {
+    margin: 0 auto;
+    content: "";
+    display: block;
+    position: relative;
+    width: 384px;
+    height: 17px;
+    background: linear-gradient( 45deg, rgba(21, 20, 20, 0) 33.333%, #FFF 33.333%, #FFF 66.667%, rgba(0, 0, 0, 0) 66.667%), linear-gradient( -45deg, rgba(0, 0, 0, 0) 33.333%, rgba(226, 226, 226, 0) 33.333%, rgba(226, 226, 226, 0) 66.667%, #DADADA 66.667%);
+    background-size: 24px 58px;
+}

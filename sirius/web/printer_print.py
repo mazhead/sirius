@@ -216,14 +216,37 @@ def preview(user_id, username, printer_id):
 #
 #raw_image_pipeline
 
-@blueprint.route('/printer/print_raw', methods=['POST'])
-def raw_printer_print_api():
+@blueprint.route('/printer/<action>/print_raw', methods=['POST'])
+def raw_printer_print_api(action):
+    # SetDeliveryAndPrint
+    # SetDelivery
+    # SetDeliveryAndPrintNoFace
+    # SetDeliveryNoFace
     printer = hardware.Printer.query.get(1)
     pixels = image_encoding.raw_image_pipeline(BytesIO(base64.b64decode(flask.request.data)))
-    hardware_message = messages.SetDeliveryAndPrint(
-        device_address=printer.device_address,
-        pixels=pixels,
-    )
+    print action
+    if action == 'deliveryandface':
+        hardware_message = messages.SetDelivery(
+            device_address=printer.device_address,
+            pixels=pixels,
+        )
+    elif action == 'printandface':
+        hardware_message = messages.SetDeliveryAndPrint(
+            device_address=printer.device_address,
+            pixels=pixels,
+        )
+    elif action == 'delivery':
+        hardware_message = messages.SetDeliveryNoFace(
+            device_address=printer.device_address,
+            pixels=pixels,
+        )
+    elif action == 'print':
+        hardware_message = messages.SetDeliveryAndPrintNoFace(
+            device_address=printer.device_address,
+            pixels=pixels,
+        )
+    else:
+        assert False, "wtf print route {}".format(x)
 
     # If a printer is "offline" then we won't find the printer
     # connected and success will be false.

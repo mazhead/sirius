@@ -2,7 +2,18 @@
 
 {% block styles %}
 {{super()}}
-<link rel="stylesheet" href="{{url_for('static', filename='bootstrap-theme.min.css')}}">
+        <!-- Loading Bootstrap -->
+        <link href="/asset/flatui/bootstrap/css/bootstrap.css" rel="stylesheet">
+        <link href="/asset/flatui/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+        <!-- Loading Flat UI -->
+        <link href="/asset/flatui/css/flat-ui.css" rel="stylesheet">
+        <link href="/asset/css/main.css" rel="stylesheet">
+        <link rel="shortcut icon" href="/asset/flatui/images/favicon.ico">
+        <link rel="stylesheet" href="//cdn.quilljs.com/0.20.1/quill.snow.css" />
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+        <!--[if lt IE 9]>
+          <script src="asset/flatui/js/html5shiv.js"></script>
+        <![endif]-->
 {% endblock %}
 
 {% block title %}Little Printer{% endblock %}
@@ -23,9 +34,10 @@
 			<ul class="nav navbar-nav">
 				<!-- <li{% if request.url_rule.endpoint == "landing.about" %} class="active"{% endif %}><a href="{{ url_for('landing.about') }}">About</a></li> -->
 				{% if current_user.is_authenticated() %}
+				<li{% if request.url_rule.endpoint == "admin.admin_landing" %} class="active"{% endif %}><a href="{{ url_for('admin.admin_landing') }}">Face load</a></li>
 				<li{% if request.script_root + request.path == "/printer/1/printimage" %} class="active"{% endif %}><a href="/printer/1/printimage">Print image</a></li>
 				<li{% if request.script_root + request.path == "/printer/1/print" %} class="active"{% endif %}><a href="/printer/1/print">Print html</a></li>
-				<li{% if request.url_rule.endpoint == "admin.admin_landing" %} class="active"{% endif %}><a href="{{ url_for('admin.admin_landing') }}">Face load</a></li>
+				<li{% if request.url_rule.endpoint == "atkinson.atkinson_page" %} class="active"{% endif %}><a href="{{ url_for('atkinson.atkinson_page') }}">Advanced print</a></li>
 				{% endif %}
 			</ul>
 			{% if current_user.is_authenticated() %}
@@ -39,7 +51,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="container" role="main" style="max-width: 480px;" >
+<div class="container" role="main" >
 	{% for message in get_flashed_messages() %}
 	<div class="alert alert-warning">
 		<button type="button" class="close" data-dismiss="alert">&times;</button>

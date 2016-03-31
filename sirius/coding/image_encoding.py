@@ -60,23 +60,23 @@ def crop_384(im):
     return im.crop((0, 0, 384, min(h, 10000)))
 
 def dithering(im):
-    # imconvert = im.convert('RGBA')
-    # background = Image.new("RGB", im.size, (255, 255, 255))
-    # background.paste(imconvert, mask=im.split()[3])
+    imconvert = im.convert('RGBA')
+    background = Image.new("RGB", im.size, (255, 255, 255))
+    background.paste(imconvert, mask=im.split()[3])
 
     # source = background.split()
 
     # R, G, B = 0, 1, 2
     # constant = 0.8 # constant by which each pixel is divided
-
     # Red = source[R].point(lambda i: i/constant)
     # Green = source[G].point(lambda i: i/constant)
     # Blue = source[B].point(lambda i: i/constant)
 
-    # imb = Image.merge(background.mode, (Red, Green, Blue))
+    #imb = Image.merge(background.mode, (Red, Green, Blue))
 
-    # return imb.convert('1')
-    return im.convert('1')
+    return background.convert('1')
+    #return imb.convert('1')
+    #return im.convert('1')
 
 def threshold(im):
     thresholded = ''.join(pixel_to_bw(x) for x in im.convert('RGBA').getdata())
@@ -155,7 +155,7 @@ def html_to_png(html):
 def raw_image_pipeline(data):
     """Encode w:384 image into an RLE image."""
     image = Image.open(data)
-    image = resize_384(image)
+    image = crop_384(image)
     return dithering(image)
 
 def image_pipeline(data):
