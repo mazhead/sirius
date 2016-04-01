@@ -36,6 +36,7 @@
 				<li{% if request.script_root + request.path == "/printer/1/printimage" %} class="active"{% endif %}><a href="/printer/1/printimage">Print image</a></li>
 				<li{% if request.script_root + request.path == "/printer/1/print" %} class="active"{% endif %}><a href="/printer/1/print">Print html</a></li>
 				<li{% if request.url_rule.endpoint == "atkinson.atkinson_page" %} class="active"{% endif %}><a href="{{ url_for('atkinson.atkinson_page') }}">Advanced print</a></li>
+				<li{% if request.script_root + request.path == "/printer/1" %} class="active"{% endif %}><a href="/printer/1">Printer overview</a></li>
 				{% endif %}
 			</ul>
 			{% if current_user.is_authenticated() %}

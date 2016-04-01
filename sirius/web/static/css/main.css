@@ -111,6 +111,7 @@ canvas {
     justify-content: flex-start;
     align-items: flex-start;
     margin: 0 auto;
+    flex-direction: row;
     height: 100vw;
     margin-top: 20px;
 }
