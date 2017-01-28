@@ -28,7 +28,7 @@ from sirius.web import twitter
 from sirius.web import login
 from sirius.web import printer_print
 from sirius.web import printer_overview
-from sirius.web import files
+# from sirius.web import files
 
 
 logger = logging.getLogger(__name__)
